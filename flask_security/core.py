@@ -46,6 +46,7 @@ _default_config = {
     'CONFIRM_URL': '/confirm',
     'POST_LOGIN_VIEW': '/',
     'POST_LOGOUT_VIEW': '/',
+    'RESEND_EMAIL_URL': '/resend_email',
     'CONFIRM_ERROR_VIEW': None,
     'POST_REGISTER_VIEW': None,
     'POST_CONFIRM_VIEW': None,
@@ -442,8 +443,8 @@ class Security(object):
                            change_password_form=change_password_form,
                            send_confirmation_form=send_confirmation_form,
                            passwordless_login_form=passwordless_login_form,
-                           anonymous_user=anonymous_user)
-
+                           anonymous_user=anonymous_user,
+                           )
         if register_blueprint:
             app.register_blueprint(create_blueprint(state, __name__))
             app.context_processor(_context_processor)

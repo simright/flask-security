@@ -24,6 +24,7 @@ from .recoverable import reset_password_token_status, \
     send_reset_password_instructions, update_password
 from .changeable import change_user_password
 from .registerable import register_user
+from .resend_mail import resend_register_email
 from .utils import config_value, do_flash, get_url, get_post_login_redirect, \
     get_post_register_redirect, get_message, login_user, logout_user, \
     url_for_security as url_for, slash_url_suffix
@@ -327,6 +328,12 @@ def change_password():
                                      **_ctx('change_password'))
 
 
+@login_required
+def resend_email():
+    result = resend_register_email(current_user)
+    return result
+
+
 def create_blueprint(state, import_name):
     """Creates the security extension blueprint"""
 
@@ -336,6 +343,13 @@ def create_blueprint(state, import_name):
                    template_folder='templates')
 
     bp.route(state.logout_url, endpoint='logout')(logout)
+
+    if state.registerable:
+        bp.route(
+            state.resend_email_url,
+            methods=['GET'],
+            endpoint='resend_email'
+        )(resend_email)
 
     if state.passwordless:
         bp.route(state.login_url,
