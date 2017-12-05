@@ -179,6 +179,7 @@ class SQLAlchemyUserDatastore(SQLAlchemyDatastore, UserDatastore):
     """A SQLAlchemy datastore implementation for Flask-Security that assumes the
     use of the Flask-SQLAlchemy extension.
     """
+
     def __init__(self, db, user_model, role_model):
         SQLAlchemyDatastore.__init__(self, db)
         UserDatastore.__init__(self, user_model, role_model)
@@ -210,6 +211,7 @@ class MongoEngineUserDatastore(MongoEngineDatastore, UserDatastore):
     """A MongoEngine datastore implementation for Flask-Security that assumes
     the use of the Flask-MongoEngine extension.
     """
+
     def __init__(self, db, user_model, role_model):
         MongoEngineDatastore.__init__(self, db)
         UserDatastore.__init__(self, user_model, role_model)
@@ -221,7 +223,7 @@ class MongoEngineUserDatastore(MongoEngineDatastore, UserDatastore):
         except ValidationError:
             pass
         for attr in get_identity_attributes():
-            query_key = '%s__iexact' % attr
+            query_key = '%s__exact' % attr
             query = {query_key: identifier}
             rv = self.user_model.objects(**query).first()
             if rv is not None:
@@ -260,6 +262,7 @@ class PeeweeUserDatastore(PeeweeDatastore, UserDatastore):
     :param role_model: A role model class definition
     :param role_link: A model implementing the many-to-many user-role relation
     """
+
     def __init__(self, db, user_model, role_model, role_link):
         PeeweeDatastore.__init__(self, db)
         UserDatastore.__init__(self, user_model, role_model)

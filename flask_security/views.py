@@ -82,7 +82,7 @@ def login():
 
     if request.json:
         return _render_json(form, include_auth_token=True)
-    
+
     SERVER_LOCATION = current_app.config['SERVER_LOCATION']
 
     return _security.render_template(config_value('LOGIN_USER_TEMPLATE'),
@@ -96,7 +96,7 @@ def logout():
     if current_user.is_authenticated:
         logout_user()
 
-    redirect_to_post_logout_view = redirect(request.args.get('next', None) or \
+    redirect_to_post_logout_view = redirect(request.args.get('next', None) or
                                             get_url(_security.post_logout_view))
 
     res = make_response(redirect_to_post_logout_view)
@@ -315,7 +315,7 @@ def change_password():
         after_this_request(_commit)
         change_user_password(current_user, form.new_password.data)
         if request.json is None:
-            #do_flash(*get_message('PASSWORD_CHANGE'))
+            # do_flash(*get_message('PASSWORD_CHANGE'))
             return redirect(get_url(_security.post_change_view) or
                             get_url(_security.post_login_view))
 
