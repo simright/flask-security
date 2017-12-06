@@ -351,12 +351,7 @@ def ajax_change_password():
         form.user = current_user
         return _render_json(form)
 
-    return _security.render_template(
-        config_value('CHANGE_PASSWORD_TEMPLATE'),
-        change_password_form=form,
-        msg=form.password.errors,
-        **_ctx('change_password')
-    )
+    return jsonify(msg=form.password.errors)
 
 
 @login_required
