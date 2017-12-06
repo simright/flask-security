@@ -403,8 +403,8 @@ def create_blueprint(state, import_name):
 
     if state.changeable:
         bp.route(state.change_url,
-                 methods=['POST'],  # ['GET', 'POST']
-                 endpoint='change_password')(ajax_change_password)  # change_password
+                 methods=['GET', 'POST'],
+                 endpoint='change_password')(change_password)
 
     if state.confirmable:
         bp.route(state.confirm_url,
