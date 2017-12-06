@@ -329,37 +329,6 @@ def change_password():
 
 
 @login_required
-def ajax_change_password():
-    """View function which handles a change password request."""
-
-    form_class = _security.change_password_form
-
-    if request.json:
-        form = form_class(MultiDict(request.json))
-    else:
-        form = form_class()
-    if form.validate_on_submit():
-        after_this_request(_commit)
-        change_user_password(current_user, form.new_password.data)
-        if request.json is None:
-            # do_flash(*get_message('PASSWORD_CHANGE'))
-            return redirect(
-                get_url(_security.post_change_view) or get_url(_security.post_login_view)
-            )
-
-    if request.json:
-        form.user = current_user
-        return _render_json(form)
-
-    return _security.render_template(
-        config_value('CHANGE_PASSWORD_TEMPLATE'),
-        change_password_form=form,
-        msg=form.password.errors,
-        **_ctx('change_password')
-    )
-
-
-@login_required
 def resend_email():
     result = resend_register_email(current_user)
     return result
@@ -408,8 +377,8 @@ def create_blueprint(state, import_name):
 
     if state.changeable:
         bp.route(state.change_url,
-                 methods=['POST'],  # ['GET', 'POST']
-                 endpoint='change_password')(ajax_change_password)  # change_password
+                 methods=['GET', 'POST'],
+                 endpoint='change_password')(change_password)
 
     if state.confirmable:
         bp.route(state.confirm_url,
