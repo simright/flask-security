@@ -323,7 +323,7 @@ def send_mail(subject, recipient, template, **context):
     :param template: The name of the email template
     :param context: The context to render the template with
     """
-
+    lang = judge_lang_by_email(recipient)
     context.setdefault('security', _security)
     context.update(_security._run_ctx_processor('mail'))
 
@@ -335,7 +335,7 @@ def send_mail(subject, recipient, template, **context):
     if config_value('EMAIL_PLAINTEXT'):
         msg.body = render_template('%s/%s.txt' % ctx, **context)
     if config_value('EMAIL_HTML'):
-        msg.html = render_template('%s/%s.html' % ctx, **context)
+        msg.html = render_template('%s/%s_{0}.html'.format(lang) % ctx, **context)
 
     if _security._send_mail_task:
         _security._send_mail_task(msg)
@@ -441,3 +441,17 @@ def capture_reset_password_requests(reset_password_sent_at=None):
         yield reset_requests
     finally:
         reset_password_instructions_sent.disconnect(_on)
+
+_chinese_email_list = [
+    '@163.com',
+    '@126.com',
+    '@qq.com',
+    '@sohu.com',
+    '@sina.com',
+]
+
+def judge_lang_by_email(email):
+    for chinese_email in _chinese_email_list:
+        if chinese_email in email:
+            return 'zh'
+    return 'en'
