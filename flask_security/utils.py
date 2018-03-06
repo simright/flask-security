@@ -31,6 +31,8 @@ from werkzeug.local import LocalProxy
 
 from .signals import user_registered, login_instructions_sent, reset_password_instructions_sent
 
+from simright.helpers.config_utils import get_config_value
+
 # Convenient references
 _security = LocalProxy(lambda: current_app.extensions['security'])
 
@@ -323,7 +325,7 @@ def send_mail(subject, recipient, template, **context):
     :param template: The name of the email template
     :param context: The context to render the template with
     """
-
+    lang = judge_lang_by_email(recipient)
     context.setdefault('security', _security)
     context.update(_security._run_ctx_processor('mail'))
 
@@ -335,7 +337,7 @@ def send_mail(subject, recipient, template, **context):
     if config_value('EMAIL_PLAINTEXT'):
         msg.body = render_template('%s/%s.txt' % ctx, **context)
     if config_value('EMAIL_HTML'):
-        msg.html = render_template('%s/%s.html' % ctx, **context)
+        msg.html = render_template('%s/%s_{0}.html'.format(lang) % ctx, **context)
 
     if _security._send_mail_task:
         _security._send_mail_task(msg)
@@ -441,3 +443,10 @@ def capture_reset_password_requests(reset_password_sent_at=None):
         yield reset_requests
     finally:
         reset_password_instructions_sent.disconnect(_on)
+
+def judge_lang_by_email(email):
+    chinese_email_list = get_config_value('CHINESE_EMAIL_LIST')
+    for chinese_email in chinese_email_list:
+        if chinese_email in email:
+            return 'zh'
+    return 'en'
