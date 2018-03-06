@@ -31,8 +31,6 @@ from werkzeug.local import LocalProxy
 
 from .signals import user_registered, login_instructions_sent, reset_password_instructions_sent
 
-from simright.helpers.config_utils import get_config_value
-
 # Convenient references
 _security = LocalProxy(lambda: current_app.extensions['security'])
 
@@ -41,6 +39,15 @@ _datastore = LocalProxy(lambda: _security.datastore)
 _pwd_context = LocalProxy(lambda: _security.pwd_context)
 
 PY3 = sys.version_info[0] == 3
+
+CHINESE_EMAIL_LIST = (
+    '@163.com',
+    '@126.com',
+    '@qq.com',
+    '@sohu.com',
+    '@sina.com',
+    '@simright.com',
+)
 
 if PY3:  # pragma: no cover
     string_types = str,  # pragma: no flakes
@@ -445,7 +452,7 @@ def capture_reset_password_requests(reset_password_sent_at=None):
         reset_password_instructions_sent.disconnect(_on)
 
 def judge_lang_by_email(email):
-    chinese_email_list = get_config_value('CHINESE_EMAIL_LIST')
+    chinese_email_list = CHINESE_EMAIL_LIST
     for chinese_email in chinese_email_list:
         if chinese_email in email:
             return 'zh'
