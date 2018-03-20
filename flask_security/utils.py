@@ -327,7 +327,7 @@ def get_within_delta(key, app=None):
 def send_mail(subject, recipient, template, **context):
     """Send an email via the Flask-Mail extension.
 
-    :param subject: Email subject
+    :param subject: Key of email subject  in config
     :param recipient: Email recipient
     :param template: The name of the email template
     :param context: The context to render the template with
@@ -335,6 +335,12 @@ def send_mail(subject, recipient, template, **context):
     lang = judge_lang_by_email(recipient)
     context.setdefault('security', _security)
     context.update(_security._run_ctx_processor('mail'))
+    
+    if not lang == 'en':
+        subject = subject + '_' + lang.upper()
+
+    if config_value(subject):
+        subject = config_value(subject)
 
     msg = Message(subject,
                   sender=_security.email_sender,

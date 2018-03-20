@@ -29,8 +29,8 @@ def send_password_changed_notice(user):
     :param user: The user to send the notice to
     """
     if config_value('SEND_PASSWORD_CHANGE_EMAIL'):
-        subject = config_value('EMAIL_SUBJECT_PASSWORD_CHANGE_NOTICE')
-        send_mail(subject, user.email, 'change_notice', user=user)
+        subject_key = 'EMAIL_SUBJECT_PASSWORD_CHANGE_NOTICE'
+        send_mail(subject_key, user.email, 'change_notice', user=user)
 
 
 def change_user_password(user, password):

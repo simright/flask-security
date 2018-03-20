@@ -30,7 +30,7 @@ def resend_register_email(user):
     if not user.confirmed_at:
         confirmation_link, token = generate_confirmation_link(user)
         send_mail(
-            config_value('EMAIL_SUBJECT_REGISTER'),
+            'EMAIL_SUBJECT_REGISTER',
             user.email,
             'welcome',
             user=user,
