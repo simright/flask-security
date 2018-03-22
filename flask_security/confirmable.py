@@ -39,7 +39,7 @@ def send_confirmation_instructions(user):
 
     confirmation_link, token = generate_confirmation_link(user)
 
-    send_mail(config_value('EMAIL_SUBJECT_CONFIRM'), user.email,
+    send_mail('EMAIL_SUBJECT_CONFIRM', user.email,
               'confirmation_instructions', user=user,
               confirmation_link=confirmation_link)
 
