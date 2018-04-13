@@ -94,7 +94,7 @@ _default_config = {
     'EMAIL_SUBJECT_REGISTER_ZH': '欢迎',
     'EMAIL_SUBJECT_CONFIRM_ZH': '请确认您的email',
     'EMAIL_SUBJECT_PASSWORDLESS_ZH': '登陆说明',
-    'EMAIL_SUBJECT_PASSWORD_NOTICE_ZH': '您的密码已被充值',
+    'EMAIL_SUBJECT_PASSWORD_NOTICE_ZH': '您的密码已被重置',
     'EMAIL_SUBJECT_PASSWORD_CHANGE_NOTICE_ZH': '您的密码更改成功',
     'EMAIL_SUBJECT_PASSWORD_RESET_ZH': '密码重置说明',
 
