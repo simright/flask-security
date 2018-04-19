@@ -97,6 +97,7 @@ def logout():
         logout_user()
 
     redirect_to_post_logout_view = redirect(request.args.get('next', None) or
+                                            request.headers.get('Referer', None) or
                                             get_url(_security.post_logout_view))
 
     res = make_response(redirect_to_post_logout_view)
