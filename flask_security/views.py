@@ -10,7 +10,7 @@
 """
 
 from flask import current_app, redirect, request, jsonify, \
-    after_this_request, Blueprint, make_response
+    after_this_request, Blueprint, make_response, session
 from flask_login import current_user
 from werkzeug.datastructures import MultiDict
 from werkzeug.local import LocalProxy
@@ -121,6 +121,11 @@ def register():
         form_data = request.form
 
     form = form_class(form_data)
+
+    if request.method == 'GET':
+        redirect_url = request.headers.get('Referer', '/')
+        session['register_redirect_url'] = redirect_url
+
     if request.method == 'POST':
         if form.validate_on_submit():
             user = register_user(**form.to_dict())
