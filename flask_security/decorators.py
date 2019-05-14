@@ -238,6 +238,8 @@ def anonymous_user_required(f):
     return wrapper
 
 
+
+
 def verify_pag_source(func):
 	"""验证页面来源"""
 
