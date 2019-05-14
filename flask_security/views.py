@@ -28,6 +28,7 @@ from .resend_mail import resend_register_email
 from .utils import config_value, do_flash, get_url, get_post_login_redirect, \
     get_post_register_redirect, get_message, login_user, logout_user, \
     url_for_security as url_for, slash_url_suffix
+from .decorators import verify_pag_source
 
 # Convenient references
 _security = LocalProxy(lambda: current_app.extensions['security'])
@@ -107,6 +108,7 @@ def logout():
 
 
 @anonymous_user_required
+@verify_pag_source
 def register():
     """View function which handles a registration request."""
 
