@@ -9,6 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 
+import re
 from collections import namedtuple
 from functools import wraps
 
@@ -235,3 +236,16 @@ def anonymous_user_required(f):
             return redirect(utils.get_url(_security.post_login_view))
         return f(*args, **kwargs)
     return wrapper
+
+
+def verify_pag_source(func):
+	"""验证页面来源"""
+    def wrapped_fun():
+        regx = re.compile(r"https?://www.simright.[com|io]/phone_register")
+        refer = str(request.referrer)
+        rest = re.match(regx, refer)
+        if rest is not None:
+            return func()
+        else:
+            raise Exception("Please request in a legal way")
+    return wrapped_fun
