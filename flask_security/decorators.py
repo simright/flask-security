@@ -241,15 +241,15 @@ def anonymous_user_required(f):
 
 
 def verify_pag_source(func):
-    """验证页面来源"""
+	"""验证页面来源"""
 
     @wraps(func)
-    def wrapper(*args, **kwargs):
-        regx = re.compile(r"https?://www.simright.(com|io)/phone_register")
+    def wrapped_fun():
+        regx = re.compile(r"https?://www.simright.[com|io]/phone_register")
         refer = str(request.referrer)
         rest = re.match(regx, refer)
         if rest is not None:
-            return func(*args, **kwargs)
+            return func()
         else:
             raise Exception("Please request in a legal way")
-    return wrapper
+    return wrapped_fun
