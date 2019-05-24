@@ -244,7 +244,7 @@ def verify_pag_source(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        regx = re.compile(r"^https?://www.simright.(com|io)\.*")
+        regx = re.compile(r"^https?://www.simright.(com|io).*")
         refer = str(request.referrer)
         rest = re.match(regx, refer)
         if rest is not None:
